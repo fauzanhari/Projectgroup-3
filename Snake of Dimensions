@@ -50,9 +50,7 @@ int jumlahEkor;
 
 // Deklarasi fungsi dengan parameter pointer
 void garisMenu();
-void ketikTengah(string teks, int lebar);
 void tengah(string teks);
-void tampilkanMenu(string teks, int noMenu, int pil);
 int ambilTombol();
 void logo();
 void mulai();
@@ -85,11 +83,23 @@ int main() {
             gerakUlar(&gameState);
             Sleep(jedaGame);
         }
-        system("pause");
+
         akhirGame(&gameState);
     } while (!selesai);
 
     return 0;
+}
+void tengah(string teks) {
+    int panjang = teks.length();
+    cout << "|";
+    for (int i = 0; i <= (lebar-1) - panjang; i++)
+    {
+        if (i == lebar/2 - panjang / 2)
+            cout << teks;
+        else
+            cout <<" ";
+    }
+    cout << "|" << endl;
 }
 
 void garisMenu() {
@@ -97,30 +107,29 @@ void garisMenu() {
     cout << "\n";
 }
 
-void ketikTengah(string teks, int lebar) {
-    int spasi = (lebar - (int)teks.length()) / 2;
-    cout << string(spasi, ' ');
-    for (char c : teks) {
-        cout << c;
-        for (long long i = 0; i < 1000000; i++);
-    }
-    cout << endl;
+void tampilkanMenulvl(string teks, int level ,int noMenu, int pil) {
+    int panjang = teks.length();
+    cout << "|";
+    for (int i = 0; i <= lebar-panjang-2; i++) {
+        if (i == (lebar - (int)teks.length())/2) {
+            if (pil == noMenu) cout << "\033[35m" << teks <<level<< "\033[0m";
+            else cout << teks<<level;
+        } else {
+            cout << " ";
+        }
+    } cout << "|" << endl;
 }
-
-void tengah(string teks) {
-    int spasi = (lebar - teks.length()) / 2;
-    cout << string(spasi, ' ') << teks << endl;
-}
-
-void tampilkanMenu(string teks, int noMenu, int pil) {
-    for (int i = 0; i <= lebar-10; i++) {
+void tampilkanMenuteks(string teks,int noMenu, int pil) {
+    int panjang = teks.length();
+    cout << "|";
+    for (int i = 0; i <= lebar-panjang-1; i++) {
         if (i == (lebar - (int)teks.length())/2) {
             if (pil == noMenu) cout << "\033[35m" << teks << "\033[0m";
             else cout << teks;
         } else {
             cout << " ";
         }
-    } cout << endl;
+    } cout << "|" << endl;
 }
 
 int ambilTombol() {
@@ -133,26 +142,27 @@ int ambilTombol() {
 void logo() {
     system("cls");
     garisMenu();
-    cout << "\033[32m" << R"(
-   '        /^\/^\
-          _|__|  O|     +
- \/     /~     \_/ \
-  \____|__________/  \
-         \_______      \
-                 `\     \    '            \
-                   |     |                  \
-                  /      /           +        \
-    +            /     /                       \\
-               /      /                         \ \
-              /     /                            \  \ '
-       '    /     /             _----_            \   \
-           /     /           _-~      ~-_         |   |
-          (      (        _-~    _--_    ~-_     _/   |
-           \      ~-____-~    _-~    ~-_    ~-_-~    /    +
-    +       ~-_           _-~          ~-_       _-~
-                ~--______-~                ~-___-~
-    )" << "\033[0m" << endl;
-    ketikTengah("+  SNAKE OF DIMENSIONS  +", lebar);
+    cout << "\033[32m" << R"(|                                                           |
+|   '        /^\/^\                                         |
+|          _|__|  O|     +                                  |
+| \/     /~     \_/ \                                       |
+|  \____|__________/  \                                     |
+|         \_______      \                                   |
+|                 `\     \    '            \                |
+|                   |     |                  \              |
+|                  /      /           +        \            |
+|    +            /     /                       \\          |
+|               /      /                         \ \        |
+|              /     /                            \  \ '    |
+|       '    /     /             _----_            \   \    |
+|           /     /           _-~      ~-_         |   |    |
+|          (      (        _-~    _--_    ~-_     _/   |    |
+|           \      ~-____-~    _-~    ~-_    ~-_-~    /    +|
+|    +       ~-_           _-~          ~-_       _-~       |
+|                 ~--______-~                ~-___-~        |
+|                                                           |)" << "\033[0m" << endl;
+    garisMenu();
+    tengah("+  WELCOME TO SNAKE OF DIMENSIONS  +");
     garisMenu();
 }
 
@@ -162,14 +172,11 @@ void mulai() {
     while (!selesaiMenu) {
         system("cls");
         logo();
-        garisMenu();
-        cout << endl;
-        tampilkanMenu(" Mode Game: " + modeGame, 1, pilihan);
-        tampilkanMenu(" Level Game: " + to_string(levelGame), 2, pilihan);
-        tampilkanMenu(" Mulai Game", 3, pilihan);
-        tampilkanMenu(" Petunjuk Permainan", 4, pilihan);
-        tampilkanMenu(" Keluar", 5, pilihan);
-        cout << endl;
+        tampilkanMenuteks(" Mulai Game", 1, pilihan);
+        tampilkanMenulvl(" Level Game: " ,levelGame, 2, pilihan);
+        tampilkanMenuteks(" Mode Game: " + modeGame, 3, pilihan);
+        tampilkanMenuteks(" Petunjuk Permainan", 4, pilihan);
+        tampilkanMenuteks(" Keluar", 5, pilihan);
         garisMenu();
 
         int tombol = ambilTombol();
@@ -177,23 +184,23 @@ void mulai() {
             case 72: case 'w': case 'W': if (pilihan > 1) pilihan--; break;
             case 80: case 's': case 'S': if (pilihan < 5) pilihan++; break;
             case 75:
-                if (pilihan == 1)
+                if (pilihan == 3)
                     modeGame = (modeGame == "Normal") ? "Hard" : "Normal";
                 else if (pilihan == 2 && levelGame > 1)
                     levelGame--;
                 break;
             case 77:
-                if (pilihan == 1)
+                if (pilihan == 3)
                     modeGame = (modeGame == "Normal") ? "Hard" : "Normal";
-                else if (pilihan == 2 && levelGame < 10)
+                else if (pilihan == 2 && levelGame < 5)
                     levelGame++;
                 break;
             case 13:
-                if (pilihan == 3) selesaiMenu = true;
+                if (pilihan == 1) selesaiMenu = true;
                 else if (pilihan == 4) {
                     system("cls");
                     garisMenu();
-                    ketikTengah("Petunjuk Permainan", lebar);
+                    tengah("Petunjuk Permainan");
                     garisMenu();
                     cout << "\n  - Gunakan panah atau WASD untuk menggerakkan ular.\n";
                     cout << "  - Makan makanan (@) untuk menambah skor dan panjang tubuh ular.\n";
@@ -366,23 +373,20 @@ void akhirGame(GameState* gameState) {
         system("cls");
         garisMenu();
         cout << "\033[1;31m";
-        ketikTengah("+  GAME OVER  +", lebar);
+        tengah("+  GAME OVER !  +");
         cout << "\033[0m";
         garisMenu();
-        cout << "\n";
-        tengah("Skor Akhir: " + to_string(*gameState->skorPtr));
-        tengah("Woww! Permainan yang keren\n\n");
+        tampilkanMenulvl("Skor Akhir: " ,*gameState->skorPtr,1,0);
+        tengah("Woww! Permainan yang keren");
         garisMenu();
-        cout << "\n";
-        tampilkanMenu(" Main Lagi", 1, pilihan);
-        tampilkanMenu(" Keluar", 2, pilihan);
-        cout << "\n";
+        tampilkanMenuteks(" Main Lagi", 1, pilihan);
+        tampilkanMenuteks(" Keluar", 2, pilihan);
         garisMenu();
 
         int tombol = ambilTombol();
         switch (tombol) {
-            case 72: case 'w': case 'W': if (pilihan > 1) pilihan--; break;
-            case 80: case 's': case 'S': if (pilihan < 3) pilihan++; break;
+            case 72: case 'w': case 'W': if (pilihan >= 1) pilihan--;if (pilihan == 0) pilihan = 2; break;
+            case 80: case 's': case 'S': if (pilihan <= 3) pilihan++;if (pilihan == 3) pilihan = 1; break;
             case 13:
                 if (pilihan == 1) {
                     awalGame(gameState);
