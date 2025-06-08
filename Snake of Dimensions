@@ -259,9 +259,10 @@ void gerakUlar() {
     }
     // Cek tabrakan dengan ekor
         for (int i = 0; i < jumlahEkor; i++) {
-            if (ekor[i].x == kepala.x && ekor[i].y == kepala.y)
+            if (ekor[i].x == kepala.x && ekor[i].y == kepala.y){
             cout << "Yah kasihan deh, kamu menabrak ekor sendiri\n";
             selesai = true;
+           }
         }
     // Cek jika kepala makan makanan
     if (kepala.x == makanan.x && kepala.y == makanan.y) {
