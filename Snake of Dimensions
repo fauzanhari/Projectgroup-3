@@ -85,7 +85,7 @@ int main() {
             gerakUlar(&gameState);
             Sleep(jedaGame);
         }
-
+        system("pause");
         akhirGame(&gameState);
     } while (!selesai);
 
