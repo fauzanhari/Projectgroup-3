@@ -10,7 +10,7 @@ const int tinggi = 20;
 const int ekorMaks = 100;
 bool selesai;
 int skor = 0;
-int jedaGame = 500;
+int jedaGame ;
 string modeGame = "Normal";
 int levelGame = 1;
 
@@ -60,6 +60,8 @@ void displayGame(GameState* gameState);
 void input(GameState* gameState);
 void gerakUlar(GameState* gameState);
 void akhirGame(GameState* gameState);
+void tampilkanMenulvl(string teks, int level ,int noMenu, int pil);
+void tampilkanMenuteks(string teks,int noMenu, int pil);
 
 int main() {
     do {
@@ -69,7 +71,7 @@ int main() {
         GameState gameState;
         gameState.kepalaPtr = &kepala;
         gameState.makananPtr = &makanan;
-        gameState.ekorPtr = ekor;
+        gameState.ekorPtr = &ekor[0];
         gameState.jumlahEkorPtr = &jumlahEkor;
         gameState.skorPtr = &skor;
         gameState.selesaiPtr = &selesai;
@@ -83,7 +85,7 @@ int main() {
             gerakUlar(&gameState);
             Sleep(jedaGame);
         }
-
+        system("pause");
         akhirGame(&gameState);
     } while (!selesai);
 
@@ -132,7 +134,7 @@ void tampilkanMenuteks(string teks,int noMenu, int pil) {
     } cout << "|" << endl;
 }
 
-int ambilTombol() {
+int ambilTombol() { //biar ga delay buat panah
     int tombol = _getch();
     if (tombol == 0 || tombol == 224)
         tombol = _getch();
@@ -141,6 +143,8 @@ int ambilTombol() {
 
 void logo() {
     system("cls");
+    garisMenu();
+    tengah("+  WELCOME TO SNAKE OF DIMENSIONS  +");
     garisMenu();
     cout << "\033[32m" << R"(|                                                           |
 |   '        /^\/^\                                         |
@@ -162,7 +166,7 @@ void logo() {
 |                 ~--______-~                ~-___-~        |
 |                                                           |)" << "\033[0m" << endl;
     garisMenu();
-    tengah("+  WELCOME TO SNAKE OF DIMENSIONS  +");
+    tengah("+  PROJECT BY GROUP 3  +");
     garisMenu();
 }
 
@@ -360,7 +364,7 @@ void gerakUlar(GameState* gameState) {
     
     if (gameState->kepalaPtr->samaDengan(gameState->makananPtr)) {
         *gameState->skorPtr += 10;
-        Beep(1000, 100);
+        Beep(2000, 100);
         if (*gameState->jumlahEkorPtr < ekorMaks) (*gameState->jumlahEkorPtr)++;
         buatMakanan(gameState);
     }
