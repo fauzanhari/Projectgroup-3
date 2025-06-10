@@ -179,8 +179,8 @@ void mulai() {
 
         int tombol = ambilTombol();
         switch (tombol) {
-            case 72: case 'w': case 'W': if (pilihan > 1) pilihan--; break;
-            case 80: case 's': case 'S': if (pilihan < 5) pilihan++; break;
+            case 72: case 'w': case 'W': pilihan--; if (pilihan < 1) pilihan = 5; break;
+            case 80: case 's': case 'S': pilihan++; if (pilihan > 5) pilihan = 1; break;
             case 75:
                 if (pilihan == 3)
                     modeGame = (modeGame == "Normal") ? "Hard" : "Normal";
@@ -252,7 +252,7 @@ void awalGame(dataGame* statusGame) {
 }
 void displayGame(dataGame* statusGame) {
     system("cls");
-    for (int vertikal = 0; vertikal < lebar + 2; vertikal++) 
+    for (int horizontal = 0; horizontal < lebar + 2; horizontal++) 
         cout << "\033[34m#\033[0m";
     cout << endl;
 
@@ -282,7 +282,7 @@ void displayGame(dataGame* statusGame) {
         cout << endl;
     }
     
-    for (int vertikal = 0; vertikal < lebar + 2; vertikal++) 
+    for (int horizontal = 0; horizontal < lebar + 2; horizontal++) 
         cout << "\033[34m#\033[0m";
     cout << endl;
     
@@ -378,8 +378,8 @@ void akhirGame(dataGame* statusGame) {
 
         int tombol = ambilTombol();
         switch (tombol) {
-            case 72: case 'w': case 'W': if (pilihan >= 1) pilihan--;if (pilihan == 0) pilihan = 2; break;
-            case 80: case 's': case 'S': if (pilihan <= 3) pilihan++;if (pilihan == 3) pilihan = 1; break;
+            case 72: case 'w': case 'W': pilihan--; if (pilihan < 1) pilihan = 2; break;
+            case 80: case 's': case 'S': pilihan++; if (pilihan > 2) pilihan = 1; break;
             case 13:
                 if (pilihan == 1) {
                     awalGame(statusGame);
