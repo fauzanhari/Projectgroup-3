@@ -8,14 +8,13 @@ using namespace std;
 const int lebar = 60;
 const int tinggi = 20;
 const int ekorMaks = 100;
+const int DIAM = 0, KIRI = 1, KANAN = 2, ATAS = 3, BAWAH = 4;
 bool selesai;
 int skor = 0;
 int jedaGame ;
+int arah;
 string modeGame = "Normal";
 int levelGame = 1;
-
-enum Arah { DIAM = 0, KIRI, KANAN, ATAS, BAWAH };
-Arah arah;
 
 // Struct Titik dengan method tambahan
 struct Titik {
@@ -40,7 +39,7 @@ struct dataGame {
     int* jumlahEkorPtr;
     int* skorPtr;
     bool* selesaiPtr;
-    Arah* arahPtr;
+    int* arahPtr;
 };
 
 Titik kepala, makanan;
@@ -111,7 +110,7 @@ void tampilkanMenulvl(string teks, int level ,int noMenu, int pil) {
     cout << "|";
     for (int i = 0; i <= lebar-panjang-2; i++) {
         if (i == (lebar - (int)teks.length())/2) {
-            if (pil == noMenu) cout << "\033[35m" << teks <<level<< "\033[0m";
+            if (pil == noMenu) cout << "\033[35m" << teks << level << "\033[0m";
             else cout << teks<<level;
         } else {
             cout << " ";
@@ -171,7 +170,7 @@ void mulai() {
         system("cls");
         logo();
         tampilkanMenuteks(" Mulai Game", 1, pilihan);
-        tampilkanMenulvl(" Level Game: " ,levelGame, 2, pilihan);
+        tampilkanMenulvl(" Level Game: " , levelGame, 2, pilihan);
         tampilkanMenuteks(" Mode Game: " + modeGame, 3, pilihan);
         tampilkanMenuteks(" Petunjuk Permainan", 4, pilihan);
         tampilkanMenuteks(" Keluar", 5, pilihan);
@@ -224,13 +223,7 @@ void buatMakanan(dataGame* statusGame) {
         statusGame->makananPtr->y = rand() % tinggi;
         
         if (statusGame->makananPtr->samaDengan(statusGame->kepalaPtr)) valid = false;
-        
-        for (int i = 0; i < *statusGame->jumlahEkorPtr; i++) {
-            if (statusGame->ekorPtr[i].samaDengan(statusGame->makananPtr)) {
-                valid = false;
-                break;
-            }
-        }
+
     } while (!valid);
 }
 void awalGame(dataGame* statusGame) {
@@ -323,10 +316,10 @@ void gerakUlar(dataGame* statusGame) {
     }
     
     switch (*statusGame->arahPtr) {
-        case KIRI: statusGame->kepalaPtr->x--; break;
-        case KANAN: statusGame->kepalaPtr->x++; break;
-        case ATAS: statusGame->kepalaPtr->y--; break;
-        case BAWAH: statusGame->kepalaPtr->y++; break;
+        case 1: statusGame->kepalaPtr->x--; break;
+        case 2: statusGame->kepalaPtr->x++; break;
+        case 3: statusGame->kepalaPtr->y--; break;
+        case 4: statusGame->kepalaPtr->y++; break;
         default: break;
     }
     
